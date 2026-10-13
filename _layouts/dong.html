@@ -1,0 +1,60 @@
+---
+layout: default
+---
+
+<div class="page-with-sidebar">
+<div class="region-page">
+
+  <nav class="breadcrumb" aria-label="위치">
+    <a href="/">홈</a>
+    <span>›</span>
+    <a href="/region/{{ page.doShort | uri_escape }}/">{{ page.doShort }}</a>
+    <span>›</span>
+    <a href="/region/{{ page.doShort | uri_escape }}/{{ page.sigungu | uri_escape }}/">{{ page.sigungu }}</a>
+    <span>›</span>
+    <span>{{ page.dong }}</span>
+  </nav>
+
+  <div class="region-page-header">
+    <h1>🏷️ {{ page.sigungu }} {{ page.dong }} 아파트 공시가격 {{ page.year }}</h1>
+    <p>{{ page.total.n_fmt }}세대 · 평균 {{ page.total.avg_fmt }} · 전년 대비 {{ page.total.yoy_fmt }}</p>
+  </div>
+
+  <p class="summary-p">{{ page.summary }}</p>
+
+  <div class="ad-slot">
+    {% include ad.html %}
+  </div>
+
+  <h2 class="group-title">🏢 {{ page.dong }} 단지별 공시가격 <small style="font-weight:500;color:#6B7280;">세대수 많은 순</small></h2>
+  <div class="tbl-wrap"><table class="trade-tbl">
+    <thead><tr><th>단지</th><th>세대수</th><th>평균 공시가격</th><th>전년 대비</th><th>최고가</th><th>9억 이상</th></tr></thead>
+    <tbody>{% for r in page.rows %}<tr><td>{% if r.url %}<a href="{{ r.url }}">{{ r.name }}</a>{% else %}{{ r.name }}{% endif %}</td><td>{{ r.n }}</td><td>{{ r.avg }}</td><td>{{ r.yoy }}</td><td>{{ r.mx }}</td><td>{{ r.n9 }}세대</td></tr>
+    {% endfor %}</tbody>
+  </table></div>
+  {% if page.others > 0 %}<p style="color:#6B7280;font-size:.84rem;margin-top:6px;">호수 20세대 미만 소규모 건물 {{ page.others }}곳은 표에서 제외했고 동 전체 평균에는 포함했습니다.</p>{% endif %}
+
+<!-- ad2 -->
+  <div class="ad-slot">
+    {% include ad.html %}
+  </div>
+
+  {% if page.neighbors.size > 0 %}
+  <h2 class="group-title">📍 {{ page.sigungu }} 다른 동네</h2>
+  <div class="chip-row">
+    {% for n in page.neighbors %}<a class="chip" href="/region/{{ page.doShort | uri_escape }}/{{ page.sigungu | uri_escape }}/{{ n.name | uri_escape }}/">{{ n.name }}<em>{{ n.avg_fmt }}</em></a>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  {% include faq.html %}
+
+  <div class="tip-box">
+    <h2>{{ page.dong }} 공시가격 안내</h2>
+    <p>{{ page.year }}년 1월 1일 기준 공시가격이며, 평균은 호별 가격의 평균입니다. 단지 상세 페이지에서 면적별 최저·평균·최고와 연도별 추이를 볼 수 있습니다.</p>
+    <p class="hub-links" style="margin-top:10px;"><a href="/region/{{ page.doShort | uri_escape }}/{{ page.sigungu | uri_escape }}/">{{ page.sigungu }} 전체 →</a> <a href="/guide/">공시가격 가이드 →</a> <a href="https://wooaapt.wooahouse.com/region/{{ page.doShort | uri_escape }}/{{ page.sigungu | uri_escape }}/{{ page.dong | uri_escape }}/">{{ page.dong }} 아파트 실거래가 →</a></p>
+  </div>
+
+</div>
+<aside class="tool-sidebar"></aside>
+</div>

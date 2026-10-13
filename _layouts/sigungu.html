@@ -1,0 +1,57 @@
+---
+layout: default
+---
+
+<div class="page-with-sidebar">
+<div class="region-page">
+
+  <nav class="breadcrumb" aria-label="위치">
+    <a href="/">홈</a>
+    <span>›</span>
+    <a href="/region/{{ page.doShort | uri_escape }}/">{{ page.doShort }}</a>
+    <span>›</span>
+    <span>{{ page.sigungu }}</span>
+  </nav>
+
+  <div class="region-page-header">
+    <h1>🏷️ {{ page.doShort }} {{ page.sigungu }} 공시가격 {{ page.year }}</h1>
+    <p>{{ page.total.n_fmt }}세대 · 평균 {{ page.total.avg_fmt }} · 전년 대비 {{ page.total.yoy_fmt }}</p>
+  </div>
+
+  <p class="summary-p">{{ page.summary }}</p>
+
+  <div class="ad-slot">
+    {% include ad.html %}
+  </div>
+
+  <h2 class="group-title">📍 {{ page.sigungu }} 동네별 공시가격</h2>
+  <div class="tbl-wrap"><table class="trade-tbl">
+    <thead><tr><th>동네</th><th>세대수</th><th>단지·건물</th><th>평균 공시가격</th><th>전년 대비</th><th>9억 이상 비율</th></tr></thead>
+    <tbody>{% for d in page.dongRows %}<tr><td>{% if d.hub %}<a href="/region/{{ page.doShort | uri_escape }}/{{ page.sigungu | uri_escape }}/{{ d.name | uri_escape }}/">{{ d.name }}</a>{% else %}{{ d.name }}{% endif %}</td><td>{{ d.n_fmt }}</td><td>{{ d.cx_fmt }}</td><td>{{ d.avg_fmt }}</td><td>{{ d.yoy_fmt }}</td><td>{{ d.r9 }}</td></tr>
+    {% endfor %}</tbody>
+  </table></div>
+
+<!-- ad2 -->
+  <div class="ad-slot">
+    {% include ad.html %}
+  </div>
+
+  {% if page.top.size > 0 %}
+  <h2 class="group-title">🏆 {{ page.sigungu }} 평균 공시가격이 높은 단지</h2>
+  <ul class="food-list">
+    {% for t in page.top %}<li class="food-row"><div class="fr-main"><b><a href="{{ t.url }}" style="color:inherit;">{{ t.name }}</a></b><small>{{ t.loc }} · {{ t.n }}세대 · 평균 {{ t.avg }} · 전년 대비 {{ t.yoy }}</small></div><a class="fr-map" href="{{ t.url }}">보기</a></li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+
+  {% include faq.html %}
+
+  <div class="tip-box">
+    <h2>{{ page.sigungu }} 공시가격을 볼 때</h2>
+    <p>동네 평균은 단지 규모와 면적 구성에 크게 좌우됩니다. 관심 단지의 상세 페이지에서 전용면적별 최저·평균·최고와 연도별 추이를 확인하세요.</p>
+    <p class="hub-links" style="margin-top:10px;"><a href="/region/{{ page.doShort | uri_escape }}/">{{ page.doShort }} 전체 →</a> <a href="/guide/">공시가격 가이드 →</a> <a href="https://wooaapt.wooahouse.com/region/{{ page.doShort | uri_escape }}/{{ page.sigungu | uri_escape }}/">{{ page.sigungu }} 아파트 실거래가 →</a></p>
+  </div>
+
+</div>
+<aside class="tool-sidebar"></aside>
+</div>

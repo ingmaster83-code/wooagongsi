@@ -1,0 +1,108 @@
+---
+layout: default
+title: 우아공시가 - 아파트·빌라 공시가격 조회와 연도별 추이 (2026 공시가격)
+description: 우리 아파트 공시가격이 얼마인지, 전년보다 얼마나 올랐는지 확인하세요. 전국 공동주택 1,585만 세대의 2026 공시가격을 단지별 평균·면적별 최저·최고와 2019년부터의 추이로 정리했습니다.
+---
+
+<div class="hero">
+  <h1>우아공시가 · 🏷️ 아파트·빌라 공시가격</h1>
+  <p>단지 이름이나 동네로 검색해 보세요 (예: 헬리오시티, 잠실엘스, 대치동)</p>
+  <div class="search-wrap">
+    <input type="text" id="searchInput" class="search-input"
+           placeholder="예) 헬리오시티, 대치동, 해운대구..."
+           autocomplete="off" aria-label="단지·동네 검색">
+    <button class="search-btn" onclick="doSearch()">🔍 검색</button>
+  </div>
+</div>
+
+<div class="page-with-sidebar">
+<div>
+<div id="search-results"></div>
+
+<div class="top-ad-bar">
+  {% include ad.html %}
+</div>
+
+<div class="section" style="padding-bottom:0;">
+  <div class="info-box">
+    💡 국토교통부 '주택 공시가격 정보'({{ site.data.gongsi_stats.year }}년 1월 1일 기준) <strong>{{ site.data.gongsi_stats.units }}세대</strong>, {{ site.data.gongsi_stats.complexes }}개 단지·건물을 집계했습니다.
+    전국 평균 공시가격은 <strong>{{ site.data.gongsi_stats.avg }}</strong>, 전년 대비 약 <strong>{{ site.data.gongsi_stats.yoy }}</strong>입니다. {{ site.data.gongsi_stats.years_first }}년부터의 연도별 추이를 단지별로 볼 수 있습니다.
+  </div>
+</div>
+
+<div class="section">
+  <h2 class="section-title">🏆 평균 공시가격이 높은 단지</h2>
+  <div class="tbl-wrap"><table class="trade-tbl">
+    <thead><tr><th>단지</th><th>세대수</th><th>평균 공시가격</th><th>전년 대비</th></tr></thead>
+    <tbody>{% for r in site.data.gongsi_stats.top %}<tr><td><a href="{{ r.url }}">{{ r.name }}</a><br><small style="color:#6B7280;">{{ r.loc }}</small></td><td>{{ r.n }}</td><td>{{ r.avg }}</td><td>{{ r.yoy }}</td></tr>
+    {% endfor %}</tbody>
+  </table></div>
+  <p class="hub-links" style="margin-top:12px;"><a href="/rank/top/">평균 공시가격 랭킹 전체 →</a> <a href="/rank/rise/">상승률 랭킹 →</a> <a href="/rank/h12/">12억 이상 세대 많은 단지 →</a></p>
+</div>
+
+<div class="section">
+  <h2 class="section-title">📍 지역별로 찾기</h2>
+  <div class="region-grid">
+    {% for d in site.data.gongsi_stats.do_rows %}<a href="/region/{{ d.name | uri_escape }}/" class="region-btn"><span class="region-icon">🏷️</span>{{ d.name }}
+      <div class="region-count">{{ d.n }}세대 · 평균 {{ d.avg }} · {{ d.yoy }}</div></a>
+    {% endfor %}
+  </div>
+</div>
+
+<div class="section">
+  <h2 class="section-title">📈 공시가격이 많이 오른 단지</h2>
+  <ul class="food-list">
+    {% for t in site.data.gongsi_stats.rise %}<li class="food-row"><div class="fr-main"><b><a href="{{ t.url }}" style="color:inherit;">{{ t.name }}</a></b><small>{{ t.loc }} · {{ t.n }}세대 · 평균 {{ t.avg }} · 전년 대비 {{ t.yoy }}</small></div><a class="fr-map" href="{{ t.url }}">보기</a></li>
+    {% endfor %}
+  </ul>
+</div>
+
+<div class="section">
+  <h2 class="section-title">✅ 공시가격을 볼 때 알아두세요</h2>
+  <ul style="color:#374151;line-height:1.9;font-size:.93rem;padding-left:22px;">
+    <li>이 사이트는 <strong>단지 단위 집계</strong>입니다. 호별(동·호수) 공시가격은 <a href="https://www.realtyprice.kr" target="_blank" rel="noopener">부동산공시가격알리미</a>에서 확인하세요.</li>
+    <li>공시가격은 <strong>재산세·종합부동산세·건강보험료</strong> 등의 기준이 되며, 매년 3월 공시 후 열람·의견 제출 기간이 있습니다.</li>
+    <li>변동률은 전년과 <strong>같은 전용면적 구간</strong>끼리 비교한 값이라 단지 평균의 단순 증감과 다를 수 있습니다.</li>
+  </ul>
+  <p style="margin-top:12px;"><a href="/guide/">공시가격 가이드 자세히 →</a></p>
+</div>
+
+</div>
+<aside class="tool-sidebar"></aside>
+</div>
+
+<script>
+let items = null;
+async function loadIndex() {
+  if (items) return;
+  const resp = await fetch('/search_index.json');
+  items = await resp.json();
+  items.forEach(f => { f.h = (f.n + ' ' + f.l + ' ' + f.t).toLowerCase(); });
+}
+function esc(s) { return String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function doSearch() {
+  const q = document.getElementById('searchInput').value.trim();
+  const el = document.getElementById('search-results');
+  if (!q) { el.innerHTML = ''; return; }
+  el.innerHTML = '<p style="text-align:center;padding:20px;color:#6B7280;">검색 중...</p>';
+  loadIndex().then(() => {
+    const toks = q.toLowerCase().split(/\s+/).filter(Boolean);
+    const results = [];
+    for (const f of items) {
+      if (toks.every(t => f.h.includes(t))) { results.push(f); if (results.length >= 40) break; }
+    }
+    if (results.length === 0) {
+      el.innerHTML = '<p style="text-align:center;padding:20px;color:#6B7280;">검색 결과가 없습니다.</p>';
+      return;
+    }
+    el.innerHTML = `<div style="max-width:960px;margin:0 auto;padding:0 20px;">
+      <p style="padding:8px 0;font-size:.9rem;color:#6B7280;">"${esc(q)}" 검색 결과 ${results.length}${results.length >= 40 ? '+' : ''}개</p>
+      <ul class="office-list">${results.map(f => `<li><a href="${f.u}"><b>${esc(f.n)}</b><small>${esc(f.t)} · ${esc(f.l)}</small></a></li>`).join('')}</ul>
+    </div>`;
+    el.scrollIntoView({ behavior: 'smooth' });
+  });
+}
+document.getElementById('searchInput').addEventListener('keydown', e => { if (e.key === 'Enter') doSearch(); });
+const urlQ = new URLSearchParams(location.search).get('q');
+if (urlQ) { document.getElementById('searchInput').value = urlQ; doSearch(); }
+</script>

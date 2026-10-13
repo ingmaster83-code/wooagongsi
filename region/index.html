@@ -1,0 +1,22 @@
+---
+layout: default
+title: 지역별 공시가격 - 시도별 공동주택 평균·변동률
+description: 시/도별 공동주택 공시가격. 서울, 경기, 부산 등 지역별 평균 공시가격과 전년 대비 변동률, 단지 목록을 확인하세요.
+---
+
+<div class="page-with-sidebar" style="margin-top:20px;">
+<div class="side-main">
+<div class="section">
+  <nav class="breadcrumb"><a href="/">홈</a> <span>›</span> <span>지역별 공시가격</span></nav>
+  <h1 style="font-size:1.6rem;font-weight:800;margin:20px 0 8px;">📍 지역별 공시가격</h1>
+  <p style="color:#6B7280;margin-bottom:32px;">시/도를 선택하세요</p>
+
+  <div class="region-grid">
+    {% for d in site.data.gongsi_stats.do_rows %}<a href="/region/{{ d.name | uri_escape }}/" class="region-btn"><span class="region-icon">🏷️</span>{{ d.name }}
+      <div class="region-count">{{ d.n }}세대 · 평균 {{ d.avg }} · {{ d.yoy }}</div></a>
+    {% endfor %}
+  </div>
+</div>
+</div>
+<aside class="tool-sidebar"></aside>
+</div>

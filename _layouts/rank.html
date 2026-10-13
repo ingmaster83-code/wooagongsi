@@ -1,0 +1,50 @@
+---
+layout: default
+---
+
+<div class="page-with-sidebar">
+<div class="region-page">
+
+  <nav class="breadcrumb" aria-label="위치">
+    <a href="/">홈</a>
+    <span>›</span>
+    <a href="/rank/">랭킹</a>
+    <span>›</span>
+    <span>{{ page.scope }} {{ page.rankTitle }}</span>
+  </nav>
+
+  <div class="region-page-header">
+    <h1>🏆 {{ page.scope }} {{ page.rankTitle }} TOP {{ page.count }}</h1>
+    <p>{{ page.year }}년 1월 1일 기준 · {{ page.minUnits }}세대 이상 단지</p>
+  </div>
+
+  <p class="summary-p">{{ page.summary }}</p>
+
+  <div class="ad-slot">
+    {% include ad.html %}
+  </div>
+
+  <div class="tbl-wrap"><table class="trade-tbl">
+    <thead><tr><th>순위</th><th>단지</th><th>세대수</th><th>평균 공시가격</th><th>전년 대비</th><th>9억 이상</th><th>12억 이상</th></tr></thead>
+    <tbody>{% for r in page.rows %}<tr><td>{{ r.rank }}</td><td><a href="{{ r.url }}">{{ r.name }}</a><br><small style="color:#6B7280;">{{ r.loc }}</small></td><td>{{ r.n }}</td><td>{{ r.avg }}</td><td>{{ r.yoy }}</td><td>{{ r.n9 }}세대</td><td>{{ r.n12 }}세대</td></tr>
+    {% endfor %}</tbody>
+  </table></div>
+
+<!-- ad2 -->
+  <div class="ad-slot">
+    {% include ad.html %}
+  </div>
+
+  <div class="tip-box">
+    <h2>순위를 볼 때</h2>
+    <ul>
+      <li>단지 평균은 호별 공시가격의 평균이라 면적 구성에 따라 달라집니다. 같은 면적끼리 비교하려면 단지 상세의 면적별 표를 보세요.</li>
+      <li>상승률은 같은 전용면적 구간끼리 비교한 호수 가중 변동률입니다(비교 가능한 호가 절반 미만이면 제외).</li>
+      <li>9억·12억 원은 종합부동산세 등 보유세에서 자주 쓰이는 기준 금액입니다. 실제 세액은 소유 현황과 공제에 따라 달라지므로 계산기와 공식 자료로 확인하세요.</li>
+    </ul>
+    <p class="hub-links" style="margin-top:10px;"><a href="/rank/">다른 랭킹 →</a>{% if page.doShort %} <a href="/region/{{ page.doShort | uri_escape }}/">{{ page.doShort }} 공시가격 →</a>{% endif %} <a href="https://calckit.wooahouse.com/comprehensive-real-estate-tax.html">종합부동산세 계산기 →</a></p>
+  </div>
+
+</div>
+<aside class="tool-sidebar"></aside>
+</div>

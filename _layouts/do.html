@@ -1,0 +1,65 @@
+---
+layout: default
+---
+
+<div class="page-with-sidebar">
+<div class="region-page">
+
+  <nav class="breadcrumb" aria-label="위치">
+    <a href="/">홈</a>
+    <span>›</span>
+    <a href="/region/">지역별</a>
+    <span>›</span>
+    <span>{{ page.doShort }}</span>
+  </nav>
+
+  <div class="region-page-header">
+    <h1>🏷️ {{ page.doShort }} 공동주택 공시가격 {{ page.year }}</h1>
+    <p>{{ page.total.n_fmt }}세대 · 평균 {{ page.total.avg_fmt }} · 전년 대비 {{ page.total.yoy_fmt }}</p>
+  </div>
+
+  <p class="summary-p">{{ page.summary }}</p>
+
+  <div class="ad-slot">
+    {% include ad.html %}
+  </div>
+
+  <p style="margin:8px 0 16px;"><a class="fr-map" href="/rank/top/{{ page.doShort | uri_escape }}/" style="display:inline-block;padding:9px 14px;">🏆 {{ page.doShort }} 공시가격 높은 단지 →</a> <a class="fr-map" href="/rank/rise/{{ page.doShort | uri_escape }}/" style="display:inline-block;padding:9px 14px;">📈 상승률 높은 단지 →</a></p>
+
+  <h2 class="group-title">📍 시군구별 현황</h2>
+  <div class="tbl-wrap"><table class="trade-tbl">
+    <thead><tr><th>시군구</th><th>세대수</th><th>단지·건물</th><th>평균 공시가격</th><th>전년 대비</th><th>9억 이상 비율</th></tr></thead>
+    <tbody>{% for sg in page.sgRows %}<tr><td><a href="/region/{{ page.doShort | uri_escape }}/{{ sg.name | uri_escape }}/">{{ sg.name }}</a></td><td>{{ sg.n_fmt }}</td><td>{{ sg.cx_fmt }}</td><td>{{ sg.avg_fmt }}</td><td>{{ sg.yoy_fmt }}</td><td>{{ sg.r9 }}</td></tr>
+    {% endfor %}</tbody>
+  </table></div>
+
+  {% if page.top.size > 0 %}
+  <h2 class="group-title">🏆 {{ page.doShort }} 평균 공시가격이 높은 단지</h2>
+  <ul class="food-list">
+    {% for t in page.top %}<li class="food-row"><div class="fr-main"><b><a href="{{ t.url }}" style="color:inherit;">{{ t.name }}</a></b><small>{{ t.loc }} · {{ t.n }}세대 · 평균 {{ t.avg }} · 전년 대비 {{ t.yoy }}</small></div><a class="fr-map" href="{{ t.url }}">보기</a></li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+
+<!-- ad2 -->
+  <div class="ad-slot">
+    {% include ad.html %}
+  </div>
+
+  {% if page.rise.size > 0 %}
+  <h2 class="group-title">📈 {{ page.doShort }} 공시가격 상승률이 높은 단지</h2>
+  <ul class="food-list">
+    {% for t in page.rise %}<li class="food-row"><div class="fr-main"><b><a href="{{ t.url }}" style="color:inherit;">{{ t.name }}</a></b><small>{{ t.loc }} · {{ t.n }}세대 · 평균 {{ t.avg }} · 전년 대비 {{ t.yoy }}</small></div><a class="fr-map" href="{{ t.url }}">보기</a></li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+
+  <div class="tip-box">
+    <h2>{{ page.doShort }} 공시가격 안내</h2>
+    <p>국토교통부 '주택 공시가격 정보'({{ page.year }}년 1월 1일 기준)를 법정동·단지 단위로 집계했습니다. 평균은 호별 공시가격의 평균이라 면적과 층에 따라 개별 주택과 차이가 큽니다.</p>
+    <p class="hub-links" style="margin-top:10px;"><a href="/rank/">공시가격 랭킹 →</a> <a href="/guide/">공시가격 가이드 →</a> <a href="https://wooaapt.wooahouse.com/region/{{ page.doShort | uri_escape }}/">{{ page.doShort }} 아파트 실거래가 →</a></p>
+  </div>
+
+</div>
+<aside class="tool-sidebar"></aside>
+</div>

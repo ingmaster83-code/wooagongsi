@@ -1,0 +1,45 @@
+---
+layout: default
+---
+
+<div class="page-with-sidebar">
+<div class="region-page">
+
+  <nav class="breadcrumb" aria-label="위치">
+    <a href="/">홈</a>
+    <span>›</span>
+    <span>랭킹</span>
+  </nav>
+
+  <div class="region-page-header">
+    <h1>🏆 공시가격 랭킹 {{ page.year }}</h1>
+    <p>{{ page.year }}년 1월 1일 기준 공동주택 공시가격으로 본 단지 순위</p>
+  </div>
+
+  <div class="ad-slot">
+    {% include ad.html %}
+  </div>
+
+  {% for k in page.kinds %}
+  <h2 class="group-title">{% if k.k == "top" %}🏆{% elsif k.k == "rise" %}📈{% else %}💎{% endif %} {{ k.t }}</h2>
+  <div class="chip-row">
+    <a class="chip" href="/rank/{{ k.k }}/">전국</a>
+    {% for d in page.dos %}<a class="chip" href="/rank/{{ k.k }}/{{ d | uri_escape }}/">{{ d }}</a>
+    {% endfor %}
+  </div>
+  {% endfor %}
+
+<!-- ad2 -->
+  <div class="ad-slot">
+    {% include ad.html %}
+  </div>
+
+  <div class="tip-box">
+    <h2>랭킹 기준</h2>
+    <p>{{ page.year }}년 1월 1일 기준 국토교통부 공시가격 자료에서 100세대 이상 단지를 대상으로 합니다. 상승률은 전년과 같은 전용면적 구간끼리 비교한 값입니다.</p>
+    <p class="hub-links" style="margin-top:10px;"><a href="/guide/">공시가격 가이드 →</a> <a href="/region/">지역별 공시가격 →</a></p>
+  </div>
+
+</div>
+<aside class="tool-sidebar"></aside>
+</div>
