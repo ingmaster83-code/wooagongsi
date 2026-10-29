@@ -101,6 +101,7 @@ layout: default
   <div class="tip-box">
     <h2>공시가격으로 세금 확인하기</h2>
     <p>공시가격은 재산세·종합부동산세, 건강보험료(지역가입자), 증여세·상속세 등의 기준이 됩니다. 아래 계산기에 공시가격을 넣어 보유세를 예상해 볼 수 있습니다.</p>
+    {% if page.propTax %}<p class="hub-links" style="margin-top:10px;"><a href="{{ page.propTax.url }}"><b>🧾 공시가격 {{ page.propTax.label }} 재산세 얼마? →</b></a> <span style="font-size:.85rem;color:#6B7280;">(이 단지 평균 {{ page.avg }}과 가까운 구간)</span></p>{% endif %}
     <p class="hub-links" style="margin-top:10px;"><a href="https://calckit.wooahouse.com/property-tax.html">재산세 계산기 →</a> <a href="https://calckit.wooahouse.com/comprehensive-real-estate-tax.html">종합부동산세 계산기 →</a> <a href="https://calckit.wooahouse.com/gift-tax.html">증여세 계산기 →</a></p>
     <p class="hub-links" style="margin-top:10px;">{% if page.aaptUrl %}<a href="{{ page.aaptUrl }}">{{ page.cName }} 실거래가·시세 →</a>{% endif %}{% if page.hakUrl %} <a href="{{ page.hakUrl }}">{{ page.cName }} 학군 →</a>{% endif %} <a href="/region/{{ page.doShort | uri_escape }}/{{ page.sigungu | uri_escape }}/{{ page.dong | uri_escape }}/">{{ page.dong }} 공시가격 →</a> <a href="/guide/">공시가격 가이드 →</a></p>
   </div>

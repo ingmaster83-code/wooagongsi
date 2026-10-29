@@ -223,6 +223,7 @@ module Jekyll
       data['n'] = r['n']
       data['nd'] = r['nd']
       data['avg'] = GText.won(r['avg'])
+      data['propTax'] = TaxLinks.property_tax(r['avg'])
       data['mx'] = GText.won(r['mx'])
       data['mn'] = GText.won(r['mn'])
       data['yoy'] = GText.pct(r['yoy'])
